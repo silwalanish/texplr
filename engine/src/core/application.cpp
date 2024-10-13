@@ -10,6 +10,7 @@ Application::Application(const ApplicationSpecification& specs)
 {
     m_glfwContext = std::make_unique<GLFWContext>(GLFWSpecification {});
     m_window = std::make_shared<GameWindow>(WindowSpecification { m_specs.width, m_specs.height, m_specs.name });
+    m_vulkanContext = std::make_unique<VulkanContext>(VulkanSpecification {});
     m_windowEvents = eventpp::ScopedRemover<GameWindow>(*m_window.get());
 }
 
@@ -24,6 +25,7 @@ void Application::init()
 
     m_glfwContext->init();
     m_window->init();
+    m_vulkanContext->init();
 
     m_windowEvents.appendListener(WindowEvents::WINDOW_CLOSE, std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 
@@ -59,6 +61,7 @@ void Application::destroy()
     if (m_state != ApplicationState::DESTROYED) {
         m_windowEvents.reset();
 
+        m_vulkanContext->destroy();
         m_window->destroy();
         m_glfwContext->destroy();
 

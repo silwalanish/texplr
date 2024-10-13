@@ -5,8 +5,9 @@
 #include <memory>
 #include <string>
 
-#include "./surface/game_window.h"
-#include "./surface/glfw_context.h"
+#include "surface/game_window.h"
+#include "surface/glfw_context.h"
+#include "surface/vulkan_context.h"
 
 namespace texplr {
 
@@ -48,6 +49,7 @@ private:
     ApplicationState m_state;
     ApplicationSpecification m_specs;
 
+    std::unique_ptr<VulkanContext> m_vulkanContext;
     std::unique_ptr<GLFWContext> m_glfwContext;
     std::shared_ptr<GameWindow> m_window;
 
