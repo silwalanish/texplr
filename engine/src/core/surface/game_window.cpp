@@ -22,6 +22,10 @@ GameWindow::~GameWindow()
 
 void GameWindow::init()
 {
+    if (!m_specs.isResizable) {
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    }
+
     m_handle = glfwCreateWindow(static_cast<int>(m_specs.width), static_cast<int>(m_specs.height), m_specs.title.c_str(), nullptr, nullptr);
 
     if (!m_handle) {

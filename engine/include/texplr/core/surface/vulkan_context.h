@@ -1,8 +1,12 @@
 #pragma once
 
+#include <string>
+
 namespace texplr {
 
 struct VulkanSpecification {
+    std::string appName;
+    std::string engineName;
 };
 
 class VulkanContext {
@@ -17,6 +21,7 @@ public:
 
 private:
     VulkanSpecification m_specs;
+    void* m_instance;
 };
 
 } // namespace texplr

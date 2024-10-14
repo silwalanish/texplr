@@ -10,7 +10,7 @@ Application::Application(const ApplicationSpecification& specs)
 {
     m_glfwContext = std::make_unique<GLFWContext>(GLFWSpecification {});
     m_window = std::make_shared<GameWindow>(WindowSpecification { m_specs.width, m_specs.height, m_specs.name });
-    m_vulkanContext = std::make_unique<VulkanContext>(VulkanSpecification {});
+    m_vulkanContext = std::make_unique<VulkanContext>(VulkanSpecification { m_specs.name, "Texplr" });
     m_windowEvents = eventpp::ScopedRemover<GameWindow>(*m_window.get());
 }
 
