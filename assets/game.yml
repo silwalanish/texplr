@@ -1,3 +1,4 @@
 name: "The Explorer!"
 width: 1024
 height: 768
+isResizable: true

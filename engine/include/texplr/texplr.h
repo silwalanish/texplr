@@ -2,3 +2,5 @@
 
 #include "./core/core.h"
 #include "./loader/app_loader.h"
+
+#define ENGINE "Texplr"

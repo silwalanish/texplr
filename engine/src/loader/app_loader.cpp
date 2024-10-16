@@ -18,6 +18,13 @@ ApplicationSpecification AppLoader::loadSpecs(const std::string& path)
     tree["width"] >> specs.width;
     tree["height"] >> specs.height;
 
+    bool hasIsResizable = tree.has_child(tree.root_id(), "isResizable");
+    if (hasIsResizable) {
+        tree["isResizable"] >> specs.isResizable;
+    } else {
+        specs.isResizable = false;
+    }
+
     return specs;
 }
 

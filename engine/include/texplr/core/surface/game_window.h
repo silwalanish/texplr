@@ -17,6 +17,7 @@ struct WindowSpecification {
 
 enum WindowEvents {
     WINDOW_CLOSE,
+    WINDOW_RESIZED,
 };
 
 class GameWindow : public eventpp::EventDispatcher<WindowEvents, void(const GameWindow&)> {

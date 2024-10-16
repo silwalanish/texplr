@@ -2,6 +2,8 @@
 
 #include <chrono>
 
+#include <texplr/texplr.h>
+
 namespace texplr {
 
 Application::Application(const ApplicationSpecification& specs)
@@ -9,8 +11,8 @@ Application::Application(const ApplicationSpecification& specs)
     , m_state(ApplicationState::CREATED)
 {
     m_glfwContext = std::make_unique<GLFWContext>(GLFWSpecification {});
-    m_window = std::make_shared<GameWindow>(WindowSpecification { m_specs.width, m_specs.height, m_specs.name });
-    m_vulkanContext = std::make_unique<VulkanContext>(VulkanSpecification { m_specs.name, "Texplr" });
+    m_window = std::make_shared<GameWindow>(WindowSpecification { m_specs.width, m_specs.height, m_specs.name, m_specs.isResizable });
+    m_vulkanContext = std::make_unique<VulkanContext>(VulkanSpecification { m_specs.name, ENGINE }, m_window);
     m_windowEvents = eventpp::ScopedRemover<GameWindow>(*m_window.get());
 }
 
@@ -28,6 +30,7 @@ void Application::init()
     m_vulkanContext->init();
 
     m_windowEvents.appendListener(WindowEvents::WINDOW_CLOSE, std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+    m_windowEvents.appendListener(WindowEvents::WINDOW_RESIZED, std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
 
     m_state = ApplicationState::INITIALIZED;
 }
@@ -42,6 +45,8 @@ void Application::run()
 
     while (m_state == ApplicationState::RUNNING) {
         m_glfwContext->pollEvents();
+
+        m_vulkanContext->drawFrame();
 
         currentTime = std::chrono::high_resolution_clock::now();
         deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
@@ -88,6 +93,13 @@ void Application::OnWindowClose(const GameWindow& window)
 {
     if (&window == m_window.get()) {
         this->stop();
+    }
+}
+
+void Application::OnWindowResize(const GameWindow& window)
+{
+    if (&window == m_window.get()) {
+        m_vulkanContext->requestResize();
     }
 }
 

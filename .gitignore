@@ -12,3 +12,5 @@ obj
 conan*info.*
 graph_info.json
 CMakeUserPresets.json
+
+*.spv

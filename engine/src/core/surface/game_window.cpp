@@ -11,6 +11,12 @@ static void closeCallback(GLFWwindow* handle)
     window->dispatch(WindowEvents::WINDOW_CLOSE, *window);
 }
 
+static void framebufferResizeCallback(GLFWwindow* handle, int width, int height)
+{
+    GameWindow* window = static_cast<GameWindow*>(glfwGetWindowUserPointer(handle));
+    window->dispatch(WindowEvents::WINDOW_RESIZED, *window);
+}
+
 GameWindow::GameWindow(const WindowSpecification& specs)
     : m_specs(specs)
 {
@@ -34,6 +40,7 @@ void GameWindow::init()
 
     glfwSetWindowUserPointer((GLFWwindow*)m_handle, this);
     glfwSetWindowCloseCallback((GLFWwindow*)m_handle, &closeCallback);
+    glfwSetFramebufferSizeCallback((GLFWwindow*)m_handle, &framebufferResizeCallback);
 
     glfwSetCursorPos((GLFWwindow*)m_handle, 0, 0);
 }

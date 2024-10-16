@@ -28,6 +28,7 @@ struct ApplicationSpecification {
 
     uint16_t width;
     uint16_t height;
+    bool isResizable;
 };
 
 class Application {
@@ -54,6 +55,7 @@ private:
     std::shared_ptr<GameWindow> m_window;
 
     void OnWindowClose(const GameWindow& window);
+    void OnWindowResize(const GameWindow& window);
 
     eventpp::ScopedRemover<GameWindow> m_windowEvents;
 };
